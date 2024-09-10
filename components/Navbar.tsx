@@ -5,6 +5,8 @@ import Image from "next/image";
 
 import CustomButton from "./CustomButton";
 import { useEffect, useState } from "react";
+import useUser from "@/hooks/user-user";
+import { auth } from "@/firebase";
 
 const Navbar = () => {
   const [header, setHeader] = useState(false);
@@ -16,6 +18,8 @@ const Navbar = () => {
       setHeader(false);
     }
   };
+
+  const { user, loggedIn } = useUser();
 
   useEffect(() => {
     window.addEventListener("scroll", scrollHeader);
@@ -44,15 +48,36 @@ const Navbar = () => {
           />
         </Link>
 
-        <CustomButton
-          title="Sign In"
-          btnType="button"
-          containerStyles={
-            header
-              ? "text-white text-xl font-bold rounded-full bg-primary-blue min-w-[130] hover:bg-white hover:text-primary-blue"
-              : "text-primary-blue text-xl font-bold rounded-full bg-white min-w-[130] hover:bg-primary-blue hover:text-white"
-          }
-        />
+        {loggedIn ? (
+          <div
+            onClick={() => {
+              auth.signOut();
+              location.reload();
+            }}
+          >
+            <CustomButton
+              title={`Welcome, ${user?.displayName}` ?? "User"}
+              btnType="button"
+              containerStyles={
+                header
+                  ? "text-white text-xl font-bold rounded-full bg-primary-blue min-w-[130] hover:bg-white hover:text-primary-blue"
+                  : "text-primary-blue text-xl font-bold rounded-full bg-white min-w-[130] hover:bg-primary-blue hover:text-white"
+              }
+            />
+          </div>
+        ) : (
+          <a href="/login">
+            <CustomButton
+              title="Sign In"
+              btnType="button"
+              containerStyles={
+                header
+                  ? "text-white text-xl font-bold rounded-full bg-primary-blue min-w-[130] hover:bg-white hover:text-primary-blue"
+                  : "text-primary-blue text-xl font-bold rounded-full bg-white min-w-[130] hover:bg-primary-blue hover:text-white"
+              }
+            />
+          </a>
+        )}
       </nav>
     </header>
   );

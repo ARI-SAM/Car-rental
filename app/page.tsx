@@ -1,3 +1,4 @@
+"use client";
 import {
   CarCard,
   CustomFilters,
@@ -9,19 +10,45 @@ import { fuels, yearsOfProduction } from "@/constants";
 import { HomeProps } from "@/types";
 import { fetchCars } from "@/utils";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import useUser from "@/hooks/user-user";
 
-export default async function Home({ searchParams }: HomeProps) {
-  const allCars = await fetchCars({
-    manufacturer: searchParams.manufacturer || "",
-    year: searchParams.year || 2022,
-    fuel: searchParams.fuel || "",
-    limit: searchParams.limit || 10,
-    model: searchParams.model || "",
-  });
-  // console.log(allCars)
+export default function Home({ searchParams }: HomeProps) {
+  const [allCars, setAllCars] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const { user, loggedIn } = useUser();
+
+  console.log(user);
+
+  useEffect(() => {
+    if (!loggedIn) {
+      console.log("bruh");
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    const fetchAllCars = async () => {
+      const cars = await fetchCars({
+        manufacturer: searchParams.manufacturer || "",
+        year: searchParams.year || 2022,
+        fuel: searchParams.fuel || "",
+        limit: searchParams.limit || 10,
+        model: searchParams.model || "",
+      });
+      setAllCars(cars);
+      setIsLoading(false);
+    };
+
+    fetchAllCars();
+  }, [searchParams]);
 
   const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
-  // If any of this is true, data is indeed empty
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main className="overflow-hidden ">
@@ -46,7 +73,7 @@ export default async function Home({ searchParams }: HomeProps) {
           <section>
             <div className="home__cars-wrapper">
               {allCars?.map((car) => (
-                <CarCard car={car} />
+                <CarCard key={car.id} car={car} />
               ))}
             </div>
 
