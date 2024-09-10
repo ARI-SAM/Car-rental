@@ -9,24 +9,11 @@ import {
 import { fuels, yearsOfProduction } from "@/constants";
 import { HomeProps } from "@/types";
 import { fetchCars } from "@/utils";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import useUser from "@/hooks/user-user";
 
 export default function Home({ searchParams }: HomeProps) {
   const [allCars, setAllCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-  const { user, loggedIn } = useUser();
-
-  console.log(user);
-
-  useEffect(() => {
-    if (!loggedIn) {
-      console.log("bruh");
-    }
-  }, [loggedIn]);
 
   useEffect(() => {
     const fetchAllCars = async () => {
@@ -73,7 +60,7 @@ export default function Home({ searchParams }: HomeProps) {
           <section>
             <div className="home__cars-wrapper">
               {allCars?.map((car) => (
-                <CarCard key={car.id} car={car} />
+                <CarCard car={car} />
               ))}
             </div>
 
