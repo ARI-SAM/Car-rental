@@ -56,7 +56,7 @@ const Navbar = () => {
             }}
           >
             <CustomButton
-              title={`Welcome, ${user?.displayName}` ?? "User"}
+              title={`Welcome, ${user?.displayName ?? "User"}`}
               btnType="button"
               containerStyles={
                 header

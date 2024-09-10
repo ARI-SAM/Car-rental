@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import { ImGithub, ImGoogle, ImSpinner } from "react-icons/im";
-import { auth } from "../firebase/index.ts";
+import { auth } from "../firebase";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { auth, db } from "../firebase/index.ts";
-import { collection, doc, getDoc } from "firebase/firestore";
+import { auth } from "../firebase";
 import { onAuthStateChanged, type User } from "firebase/auth";
 
 const useUser = () => {
