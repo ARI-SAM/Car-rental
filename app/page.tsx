@@ -12,7 +12,7 @@ import { fetchCars } from "@/utils";
 import { useEffect, useState } from "react";
 
 export default function Home({ searchParams }: HomeProps) {
-  const [allCars, setAllCars] = useState([]);
+  const [allCars, setAllCars] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
